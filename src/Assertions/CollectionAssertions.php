@@ -25,21 +25,16 @@ class CollectionAssertions
     const ASSERT_STARTS_WITH = 'Value array does not start as expected.';
 
     /**
-     * @param $value
-     * @param string $message
+     * @param mixed $value
+     * @param string|null $message
      *
      * @throws AssertionException
      */
-    public static function isArray($value, $message = '')
+    public static function isArray($value, $message = null)
     {
-        $result = is_array($value)
-        || (is_object($value) && $value instanceof \ArrayObject)
-        || (is_object($value) && $value instanceof \SplFixedArray);
-
-        if (false === $result) {
-            throw new AssertionException(
-                ($message) ? $message : self::ASSERT_IS_ARRAY
-            );
+        $result = \is_array($value) || ($value instanceof \ArrayAccess);
+        if (!$result) {
+            throw new AssertionException($message ?? self::ASSERT_IS_ARRAY);
         }
     }
 
